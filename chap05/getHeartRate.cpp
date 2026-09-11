@@ -10,6 +10,15 @@ long lastBeat = 0;  //Time at which the last beat occurred
 float beatsPerMinute;  //Current BPM value
 int beatAvg;           //Average BPM value
 
+//各種平均値
+float totalBPM = 0;
+int bpmCount = 0;
+float averageBPM = 0;
+
+float totalTemperature = 0;
+int temperatureCount = 0;
+float averageTemperature = 0;
+
 void setHeartRate() {
   // Initialize sensor
   if (!particleSensor.begin(Wire, I2C_SPEED_FAST))  //Use default I2C port, 400kHz speed

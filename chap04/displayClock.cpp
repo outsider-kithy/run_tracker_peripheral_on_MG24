@@ -1,8 +1,14 @@
 #include "displayClock.h"
 
 unsigned long syncMillis = 0;
-uint32_t baseEpoch = 1787965425;
+uint32_t baseEpoch = 1788220800;
 bool clock_initialized = false;
+
+String startDate = "";
+String endDate = "";
+uint32_t startEpoch = 0;
+uint32_t endEpoch = 0;
+uint32_t elapsedSeconds = 0;
 
 void getTime() {
   syncMillis = millis();

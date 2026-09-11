@@ -18,7 +18,3 @@ void setDisplay() {
   tft.setCursor(10, 20);
   //tft.println("Get Ready.");
 }
-
-void updateDisplay() {
-
-}

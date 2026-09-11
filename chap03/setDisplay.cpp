@@ -16,9 +16,5 @@ void setDisplay() {
   tft.setTextColor(ST77XX_GREEN);
   tft.setTextSize(2);
   tft.setCursor(10, 20);
-  tft.println("Get Ready.");
-}
-
-void updateDisplay() {
-
+  tft.println("Hello, World");
 }

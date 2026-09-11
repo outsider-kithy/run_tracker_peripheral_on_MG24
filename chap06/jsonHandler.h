@@ -1,5 +1,9 @@
 #pragma once
 #include <Arduino.h>
+#include "getAcceralate.h"
+#include "getHeartRate.h"
+#include "getGps.h"
+#include "displayClock.h"
 
 extern void nvm3_setup();
 extern String createJson();

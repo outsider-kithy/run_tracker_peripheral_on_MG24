@@ -241,30 +241,22 @@ static void ble_initialize_gatt_db() {
   sc = sl_bt_gattdb_add_uuid128_characteristic(
     gattdb_session_id,
     my_service_handle,
-
     SL_BT_GATTDB_CHARACTERISTIC_READ |
     SL_BT_GATTDB_CHARACTERISTIC_WRITE |
     SL_BT_GATTDB_CHARACTERISTIC_WRITE_NO_RESPONSE |
     SL_BT_GATTDB_CHARACTERISTIC_NOTIFY,
-
     0x00,
     0x00,
-
     time_sync_characteristic_uuid,
-
     // variable length
     sl_bt_gattdb_variable_length_value,
-
     32, // max
-
     1,  // initial length
     time_init_value,
-
     &time_sync_characteristic_handle
   );
 
   app_assert_status(sc);
-
 
   // JSONをセントラルデバイスに送信
   uint8_t json_char_init_value = 0;
@@ -286,6 +278,29 @@ static void ble_initialize_gatt_db() {
 
   app_assert_status(sc);
 
+  //JSONを削除
+  uint8_t json_delete_value[1] = {0};
+
+  sc = sl_bt_gattdb_add_uuid128_characteristic(
+    gattdb_session_id,
+    my_service_handle,
+    SL_BT_GATTDB_CHARACTERISTIC_READ |
+    SL_BT_GATTDB_CHARACTERISTIC_WRITE |
+    SL_BT_GATTDB_CHARACTERISTIC_WRITE_NO_RESPONSE |
+    SL_BT_GATTDB_CHARACTERISTIC_NOTIFY,
+    0x00,
+    0x00,
+    json_delete_characteristic_uuid,
+    // variable length
+    sl_bt_gattdb_variable_length_value,
+    32, // max
+    1,  // initial length
+    json_delete_value,
+    &json_delete_characteristic_handle
+  );
+
+  app_assert_status(sc);
+
   // Start my BLE service
   sc = sl_bt_gattdb_start_service(gattdb_session_id, my_service_handle);
   app_assert_status(sc);
@@ -293,6 +308,7 @@ static void ble_initialize_gatt_db() {
   // Commit the GATT DB changes
   sc = sl_bt_gattdb_commit(gattdb_session_id);
   app_assert_status(sc);
+
 }
 
 //RTC同期の信号をセントラルに送信

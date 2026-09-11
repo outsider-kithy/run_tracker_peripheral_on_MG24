@@ -3,9 +3,6 @@
 // IMUの設定
 LSM6DS3 myIMU(I2C_MODE, 0x6A);    //I2C device address 0x6A
 float aX, aY, aZ;
-const float accelerationThreshold = 2.5; // threshold of significant in G's
-const int numSamples = 119;
-int samplesRead = numSamples;
 
 // 加速度のしきい値（この値を超えたら1歩とカウント）
 const float STEP_THRESHOLD = 1.2;  
@@ -41,8 +38,9 @@ void getAcceralate(){
   if(magnitude < 0.9){
     stepActive = false;
   }
-  Serial.printf("aX=%.2f\n",aX);
-  Serial.printf("aY=%.2f\n",aY);
+  Serial.printf("aX=%.2f,",aX);
+  Serial.printf("aY=%.2f,",aY);
   Serial.printf("aZ=%.2f\n",aZ);
-  Serial.println(steps);
+  // Serial.print("Steps:");
+  // Serial.println(steps);
 }
