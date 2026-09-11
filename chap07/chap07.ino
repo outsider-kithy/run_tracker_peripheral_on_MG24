@@ -12,6 +12,8 @@
 bool measuring = false;
 bool sensorInitialized = false;
 
+bool readyToMeasure = false;
+
 bool jsonCreated = false;
 String json;
 
@@ -26,12 +28,15 @@ void setup(){
   syncRtcNotification();
   delay(1000);
 
-  //今あるJSONを表示
-  //loadJsonFromNvm3();
-
   setAcceralate();
   setHeartRate();
   setDisplay();
+
+  // 起動時にスイッチがOFFなら計測開始可能
+  if (digitalRead(SWITCH_PIN) == HIGH) {
+    readyToMeasure = true;
+  }
+
   delay(1000);
 }
 
@@ -43,10 +48,17 @@ void loop(){
   }
 
   bool switchState = digitalRead(SWITCH_PIN);
-   if(switchState == LOW  && !measuring){   // スイッチON
+
+  // 一度OFFになったことを確認
+  if (switchState == HIGH && !measuring) {
+    readyToMeasure = true;
+  }
+
+   if(switchState == LOW  && !measuring && readyToMeasure){   // スイッチON   
       Serial.print("Measurement Start, ");
       Serial.println(switchState);
       measuring = true;
+      readyToMeasure = false;
 
       // 各種平均値リセット
       totalBPM = 0;
@@ -140,10 +152,17 @@ void loop(){
       json_requested = false;
   }
 
-	// // セントラルからDELETEコマンドが送られてきたら
-  if(delete_requested){
-		deleteAllJsonFiles();
+	// セントラルからDELETEコマンドが送られてきたら
+  if (delete_requested) {
     delete_requested = false;
-  }
-
+    if (deleteJsonFromNvm3()) {
+      Serial.println("JSON deletion successful");
+      Serial.println("Restarting device...");
+      delay(500);
+      NVIC_SystemReset();
+    } else {
+      // 削除失敗ならリセットしない
+      Serial.println("JSON deletion failed. Reset cancelled.");
+    }
+}
 }

@@ -210,21 +210,21 @@ String loadJsonFromNvm3() {
 // ======================================================
 // JSON削除
 // ======================================================
-void deleteJsonFromNvm3() {
-
-  Ecode_t err = nvm3_deleteObject(
+bool deleteJsonFromNvm3() {
+  sl_status_t status = nvm3_deleteObject(
     nvm3_defaultHandle,
     JSON_OBJECT_KEY
   );
 
-  if (err == ECODE_NVM3_OK) {
+  if (status == ECODE_NVM3_OK) {
     Serial.println("JSON deleted");
-    // 今あるJSONを表示
-    loadJsonFromNvm3();
-  } else {
-    Serial.print("Delete failed: ");
-    Serial.println(err);
+    return true;
   }
+
+  Serial.print("Delete error: ");
+  Serial.println(status);
+
+  return false;
 }
 
 
