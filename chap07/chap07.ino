@@ -5,7 +5,7 @@
 #include "getGps.h"
 #include "jsonHandler.h"
 #include "bleHandler.h"
-#include "sl_bluetooth.h"
+
 
 #define SWITCH_PIN 6
 

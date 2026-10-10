@@ -1,4 +1,5 @@
 #pragma once
+#include "sl_bluetooth.h"
 #include "jsonHandler.h"
 
 extern volatile bool rtc_update_requested;
