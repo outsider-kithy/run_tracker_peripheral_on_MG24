@@ -43,6 +43,10 @@ float calculateSpO2() {
   double redAC = 0;
   double irAC = 0;
 
+  if (redMean == 0 || irMean == 0 || redAC == 0 || irAC == 0) {
+    return 0;
+  }
+
   for (int i = 0; i < BUFFER_SIZE; i++) {
     double redDiff = redBuffer[i] - redMean;
     double irDiff = irBuffer[i] - irMean;
@@ -52,11 +56,6 @@ float calculateSpO2() {
 
   redAC = sqrt(redAC / BUFFER_SIZE);
   irAC = sqrt(irAC / BUFFER_SIZE);
-
-
-  if (redMean == 0 || irMean == 0 || redAC == 0 || irAC == 0) {
-    return 0;
-  }
 
   /* R =
    * (ACred / DCred)
